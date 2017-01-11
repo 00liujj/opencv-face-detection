@@ -1,45 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     	android:layout_height="match_parent">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:weightSum="1"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:orientation="horizontal"
+            <Button
+                android:id="@+id/button_callcamera"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <Button
-                    android:id="@+id/button_callcamera"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="18dp"
-                    android:text="@string/get_photo"
-                    android:layout_weight="1" />
-
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:text="@string/get_photo"
+                android:layout_weight="1" />
 
             <ImageView
                 android:id="@+id/photo_image"
@@ -48,16 +32,16 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/button_callcamera"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="80dp"
-                android:src="@drawable/ic_launcher"
-                android:layout_weight="0.61"
-                android:adjustViewBounds="true" />
+                android:layout_weight="0.67"
+                android:adjustViewBounds="true"
+                android:src="@drawable/ic_launcher" />
 
-            <TextView
-                android:text="TextView"
+            <Button
+                android:text="bottom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView" />
+                android:id="@+id/button"
+                android:layout_weight="1" />
 
         </LinearLayout>
     </ScrollView>

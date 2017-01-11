@@ -90,11 +90,20 @@ public class MainActivity extends Activity {
         File imageFile = new File(photoUri);
         if (imageFile.exists()) {
             Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+            double factor = 480.0 / bitmap.getWidth();
+            int width = (int)(bitmap.getWidth()*factor);
+            int height = (int)(bitmap.getHeight()*factor);
+            bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
             //BitmapDrawable drawable = new BitmapDrawable(this.getResources(), bitmap);
             //photoImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
             //photoImage.setImageDrawable(drawable);
-            photoImage.setImageBitmap(bitmap);
+            Log.d(TAG, String.format("in java, the size is w=%d, h=%d",
+                    bitmap.getWidth(), bitmap.getHeight()));
+            Bitmap bitmapOut =
+                    Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+            FaceDetection.detectFace(imageFile.getAbsolutePath(), bitmap, bitmapOut);
+            photoImage.setImageBitmap(bitmapOut);
         }
     }
-    private native static void detectFace(Bitmap bitmapIn, Bitmap bitmapOut);
+
 }
