@@ -17,7 +17,7 @@ void Java_com_example_camera_FaceDetection_detectFace(
     cv::CascadeClassifier classifier;
     const char *str = env->GetStringUTFChars(path, 0);
     LOGD("the file path is %s", str);
-    classifier.load("/sdcard/haarcascade_frontalface_alt.xml");
+    classifier.load(str);
     if (classifier.empty()) {
         LOGD("cannot read xml file");
     }

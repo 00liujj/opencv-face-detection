@@ -8,6 +8,14 @@ android {
         applicationId "com.example.camera"
         minSdkVersion 8
         targetSdkVersion 24
+
+        externalNativeBuild {
+            cmake {
+                arguments "-DANDROID_TOOLCHAIN_NAME=arm-linux-androideabi-4.9"
+                abiFilters "armeabi-v7a"
+                cppFlags "-fexceptions"
+            }
+        }
     }
 
     buildTypes {
@@ -16,8 +24,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
-}
 
-dependencies {
-    compile 'com.android.support:support-v4:18.0.0'
+    externalNativeBuild {
+        cmake {
+            path "src/main/cpp/CMakeLists.txt"
+        }
+    }
 }

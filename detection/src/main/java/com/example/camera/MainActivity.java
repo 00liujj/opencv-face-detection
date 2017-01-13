@@ -1,6 +1,7 @@
 package com.example.camera;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,6 +30,7 @@ public class MainActivity extends Activity {
 
     Uri fileUri = null;
     ImageView photoImage = null;
+    File cascadeFile = null;
 
     private File getOutputPhotoFile() {
 
@@ -47,21 +50,32 @@ public class MainActivity extends Activity {
                 + timeStamp + ".jpg");
     }
 
+    private File getCascadeFile() {
+        File cascadeFile = null;
+        try {
+            InputStream is = getResources().openRawResource(R.raw.haarcascade_frontalface_alt);
+            byte[] contents = new byte[is.available()];
+            is.read(contents);
+            cascadeFile = new File(getDir("cascade", Context.MODE_PRIVATE), "haarcascade_frontalface.xml");
+            FileOutputStream fos = new FileOutputStream(cascadeFile);
+            fos.write(contents);
+            cascadeFile.getAbsolutePath();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return cascadeFile;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         photoImage = (ImageView) findViewById(R.id.photo_image);
+        cascadeFile = getCascadeFile();
 
         Button callCameraButton = (Button) findViewById(R.id.button_callcamera);
 
-        InputStream is = getResources().openRawResource(R.raw.haarcascade_frontalface_alt);
-
-//        byte[] contents = new byte[is.available()];
-//        is.read(contents);
-//        FileOutputStream fos = new FileOutputStream("/sdcard/xxxx.xml");
-//        fos.write(contents);
 
         callCameraButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -110,7 +124,7 @@ public class MainActivity extends Activity {
                     bitmap.getWidth(), bitmap.getHeight()));
             Bitmap bitmapOut =
                     Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-            FaceDetection.detectFace(imageFile.getAbsolutePath(), bitmap, bitmapOut);
+            FaceDetection.detectFace(cascadeFile.getAbsolutePath(), bitmap, bitmapOut);
             photoImage.setImageBitmap(bitmapOut);
         }
     }
