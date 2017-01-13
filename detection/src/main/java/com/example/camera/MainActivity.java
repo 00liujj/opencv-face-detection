@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -53,6 +55,13 @@ public class MainActivity extends Activity {
         photoImage = (ImageView) findViewById(R.id.photo_image);
 
         Button callCameraButton = (Button) findViewById(R.id.button_callcamera);
+
+        InputStream is = getResources().openRawResource(R.raw.haarcascade_frontalface_alt);
+
+        byte[] contents = new byte[is.available()];
+        is.read(contents);
+        FileOutputStream fos = new FileOutputStream("/sdcard/xxxx.xml");
+        fos.write(contents);
 
         callCameraButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
