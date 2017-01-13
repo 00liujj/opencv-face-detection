@@ -58,10 +58,10 @@ public class MainActivity extends Activity {
 
         InputStream is = getResources().openRawResource(R.raw.haarcascade_frontalface_alt);
 
-        byte[] contents = new byte[is.available()];
-        is.read(contents);
-        FileOutputStream fos = new FileOutputStream("/sdcard/xxxx.xml");
-        fos.write(contents);
+//        byte[] contents = new byte[is.available()];
+//        is.read(contents);
+//        FileOutputStream fos = new FileOutputStream("/sdcard/xxxx.xml");
+//        fos.write(contents);
 
         callCameraButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
