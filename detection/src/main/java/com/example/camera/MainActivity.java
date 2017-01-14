@@ -25,7 +25,7 @@ import java.util.Locale;
 
 public class MainActivity extends Activity {
 
-    private static final String TAG = "CallCamera";
+    private static final String TAG = "FaceDetection";
     private static final int CAPTURE_IMAGE_ACTIVITY_REQ = 0;
 
     Uri fileUri = null;
@@ -46,8 +46,11 @@ public class MainActivity extends Activity {
 
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
 
-        return new File(directory.getPath() + File.separator + "IMG_"
-                + timeStamp + ".jpg");
+        String imagefn = directory.getPath() + File.separator + "IMG_0000" + ".jpg";
+
+        File photoFile = new File(imagefn);
+        Log.d(TAG, String.format("the image file is %s", photoFile.getAbsolutePath()));
+        return photoFile;
     }
 
     private File getCascadeFile() {
@@ -63,6 +66,7 @@ public class MainActivity extends Activity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Log.d(TAG, String.format("the cascade file is %s", cascadeFile.getAbsolutePath()));
         return cascadeFile;
     }
 

@@ -10,7 +10,7 @@ extern "C" {
 /*
  * Class:     com_example_camera_FaceDetection
  * Method:    detectFace
- * Signature: (Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V
+ * Signature: (Ljava/lang/String;Landroid/graphics/Bitmap;Landroid/graphics/Bitmap;)V
  */
 JNIEXPORT void JNICALL Java_com_example_camera_FaceDetection_detectFace
   (JNIEnv *, jclass, jstring, jobject, jobject);

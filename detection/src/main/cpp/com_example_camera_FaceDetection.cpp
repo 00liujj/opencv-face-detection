@@ -16,10 +16,10 @@ void Java_com_example_camera_FaceDetection_detectFace(
 
     cv::CascadeClassifier classifier;
     const char *str = env->GetStringUTFChars(path, 0);
-    LOGD("the file path is %s", str);
+    LOGD("the cascade file path is %s", str);
     classifier.load(str);
     if (classifier.empty()) {
-        LOGD("cannot read xml file");
+        LOGE("cannot read xml file");
     }
     env->ReleaseStringUTFChars(path, str);
     std::vector<cv::Rect> rects;
@@ -33,7 +33,7 @@ void Java_com_example_camera_FaceDetection_detectFace(
 
     classifier.detectMultiScale(grayMatIn, rects);
 
-    LOGD("the detector found %d faces", rects.size());
+    LOGD("the face detector found %d faces", rects.size());
 
     cv::Mat matOut = matIn.clone();
 
@@ -41,6 +41,6 @@ void Java_com_example_camera_FaceDetection_detectFace(
         cv::rectangle(matOut, rects[i], CV_RGB(255, 0, 0));
     }
 
-    cv::imwrite("/sdcard/test-facedetection.jpg", matOut);
+    //cv::imwrite("/sdcard/test-facedetection.jpg", matOut);
     Java_org_opencv_android_Utils_nMatToBitmap(env, cls, jlong(&matOut), bitmapOut);
 }
