@@ -2,12 +2,11 @@ cmake_minimum_required(VERSION 2.8)
 
 project(face C CXX)
 
-set(CMAKE_BUILD_TYPE Debug)
+#set(CMAKE_BUILD_TYPE Debug)
 #set(CMAKE_BUILD_TYPE Release)
 #set(CMAKE_BUILD_TYPE RelWithDebInfo)
 
 
-set(OpenCV_DIR /home/jianjun/workspace/repos/face/face/opencv-android-arm/sdk/native/jni)
 find_package(OpenCV)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_GLIBCXX_USE_CXX11_ABI=0")
