@@ -81,14 +81,7 @@ public class MainActivity extends Activity {
         Button callCameraButton = (Button) findViewById(R.id.button_callcamera);
 
 
-        callCameraButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                fileUri = Uri.fromFile(getOutputPhotoFile());
-                i.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-                startActivityForResult(i, CAPTURE_IMAGE_ACTIVITY_REQ);
-            }
-        });
+        callCameraButton.setOnClickListener(new MyOnClickListener());
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -133,4 +126,12 @@ public class MainActivity extends Activity {
         }
     }
 
+    private class MyOnClickListener implements View.OnClickListener {
+        public void onClick(View view) {
+            Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            fileUri = Uri.fromFile(getOutputPhotoFile());
+            i.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+            startActivityForResult(i, CAPTURE_IMAGE_ACTIVITY_REQ);
+        }
+    }
 }

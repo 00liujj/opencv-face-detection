@@ -41,14 +41,14 @@ public class MySurfaceView extends SurfaceView {
         //实例SurfaceHolder
         mSurfaceHolder = getHolder();
         //为SurfaceView添加状态监听
-        mSurfaceHolder.addCallback(new Callback());
+        mSurfaceHolder.addCallback(new MyCallback());
         //实例一个画笔
         mPaint = new Paint();
         mPaint.setColor(Color.RED);
         mPaint.setTextSize(30);
     }
 
-    class Callback implements SurfaceHolder.Callback {
+    class MyCallback implements SurfaceHolder.Callback {
         /**
          * 重写SurfaceHolder.Callback接口的三个方法surfaceCreated()、surfaceChanged()、surfaceDestroyed()
          */

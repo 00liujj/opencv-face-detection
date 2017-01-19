@@ -52,7 +52,7 @@ public class MyFullSurfaceView extends SurfaceView {
         //实例SurfaceHolder
         mSurfaceHolder = getHolder();
         //为SurfaceView添加状态监听
-        mSurfaceHolder.addCallback(new Callback());
+        mSurfaceHolder.addCallback(new MyCallback());
         //实例一个画笔
         mPaint = new Paint();
         mPaint.setColor(Color.RED);
@@ -62,7 +62,7 @@ public class MyFullSurfaceView extends SurfaceView {
         setFocusable(true);
     }
 
-    class Callback implements SurfaceHolder.Callback {
+    class MyCallback implements SurfaceHolder.Callback {
         /**
          * 重写SurfaceHolder.Callback接口的三个方法surfaceCreated()、surfaceChanged()、surfaceDestroyed()
          */
@@ -78,7 +78,7 @@ public class MyFullSurfaceView extends SurfaceView {
             Log.d("CPXIAO", "screenHeight = " + screenHeight);
             flag = true;
             //实例线程
-            mThread = new Thread(new ThreadFunction());
+            mThread = new Thread(new MyRunnable());
             mThread.start();
         }
 
@@ -166,7 +166,7 @@ public class MyFullSurfaceView extends SurfaceView {
 
     }
 
-    class ThreadFunction implements Runnable {
+    class MyRunnable implements Runnable {
         //设置刷新时间为50毫秒
         private static final int REFRESH_TIME = 50;
 
