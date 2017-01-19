@@ -4,10 +4,14 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.hardware.Camera;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import java.io.IOException;
 
 /**
  * Created by cpxiao on 15/9/19.
@@ -39,9 +43,11 @@ public class MySurfaceView extends SurfaceView {
 
     private void init() {
         //实例SurfaceHolder
+        Log.d(MainActivity.TAG, "Init My surface view");
         mSurfaceHolder = getHolder();
         //为SurfaceView添加状态监听
-        mSurfaceHolder.addCallback(new MyCallback());
+        mSurfaceHolder.addCallback(new MyCallback2());
+        mSurfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
         //实例一个画笔
         mPaint = new Paint();
         mPaint.setColor(Color.RED);
@@ -75,6 +81,38 @@ public class MySurfaceView extends SurfaceView {
         @Override
         public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
 
+        }
+    }
+
+    class MyCallback2 implements SurfaceHolder.Callback {
+
+        Camera camera;
+
+        @Override
+        public void surfaceCreated(SurfaceHolder surfaceHolder) {
+            camera = Camera.open();
+            if (camera == null) {
+                Log.d(MainActivity.TAG, "the camera is null");
+            }
+        }
+
+        @Override
+        public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
+            Camera.Parameters param = camera.getParameters();
+            param.setPreviewSize(i1, i2);
+            //camera.setParameters(param);
+            try {
+                camera.setPreviewDisplay(mSurfaceHolder);
+            } catch (IOException e) {
+                camera.release();
+                camera = null;
+            }
+            camera.startPreview();
+        }
+
+        @Override
+        public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
+            camera.release();
         }
     }
 

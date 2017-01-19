@@ -13,7 +13,7 @@ public class MySurfaceViewActivity extends Activity {
         super.onCreate(savedInstanceState);
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
         //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        View view = new MyFullSurfaceView(this);
+        View view = new MySurfaceView(this);
         setContentView(view);
     }
 }

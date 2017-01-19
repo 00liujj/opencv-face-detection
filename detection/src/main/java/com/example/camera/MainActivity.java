@@ -25,7 +25,7 @@ import java.util.Locale;
 
 public class MainActivity extends Activity {
 
-    private static final String TAG = "FaceDetection";
+    public static final String TAG = "FaceDetection";
     private static final int CAPTURE_IMAGE_ACTIVITY_REQ = 0;
 
     Uri fileUri = null;
