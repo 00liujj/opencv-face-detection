@@ -13,7 +13,7 @@ import android.view.SurfaceView;
 /**
  * Created by cpxiao on 15/9/19.
  */
-public class MyFullSurfaceView extends SurfaceView implements SurfaceHolder.Callback, Runnable {
+public class MyFullSurfaceView extends SurfaceView {
 
     //SurfaceHolder用于控制SurfaceView的大小、格式等，用于监听SurfaceView的状态。
     private SurfaceHolder mSurfaceHolder;
@@ -52,7 +52,7 @@ public class MyFullSurfaceView extends SurfaceView implements SurfaceHolder.Call
         //实例SurfaceHolder
         mSurfaceHolder = getHolder();
         //为SurfaceView添加状态监听
-        mSurfaceHolder.addCallback(this);
+        mSurfaceHolder.addCallback(new Callback());
         //实例一个画笔
         mPaint = new Paint();
         mPaint.setColor(Color.RED);
@@ -62,39 +62,41 @@ public class MyFullSurfaceView extends SurfaceView implements SurfaceHolder.Call
         setFocusable(true);
     }
 
-    /**
-     * 重写SurfaceHolder.Callback接口的三个方法surfaceCreated()、surfaceChanged()、surfaceDestroyed()
-     */
+    class Callback implements SurfaceHolder.Callback {
+        /**
+         * 重写SurfaceHolder.Callback接口的三个方法surfaceCreated()、surfaceChanged()、surfaceDestroyed()
+         */
 
-    /**
-     * 当SurfaceView被创建完成后响应的方法
-     */
-    @Override
-    public void surfaceCreated(SurfaceHolder surfaceHolder) {
-        screenWidth = getWidth();
-        screenHeight = getHeight();
-        Log.d("CPXIAO", "screenWidth = " + screenWidth);
-        Log.d("CPXIAO", "screenHeight = " + screenHeight);
-        flag = true;
-        //实例线程
-        mThread = new Thread(this);
-        mThread.start();
-    }
+        /**
+         * 当SurfaceView被创建完成后响应的方法
+         */
+        @Override
+        public void surfaceCreated(SurfaceHolder surfaceHolder) {
+            screenWidth = getWidth();
+            screenHeight = getHeight();
+            Log.d("CPXIAO", "screenWidth = " + screenWidth);
+            Log.d("CPXIAO", "screenHeight = " + screenHeight);
+            flag = true;
+            //实例线程
+            mThread = new Thread(new ThreadFunction());
+            mThread.start();
+        }
 
-    /**
-     * 当SurfaceView状态发生改变时响应的方法
-     */
-    @Override
-    public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
+        /**
+         * 当SurfaceView状态发生改变时响应的方法
+         */
+        @Override
+        public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
 
-    }
+        }
 
-    /**
-     * 当SurfaceView状态Destroyed时响应的方法
-     */
-    @Override
-    public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-        flag = false;
+        /**
+         * 当SurfaceView状态Destroyed时响应的方法
+         */
+        @Override
+        public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
+            flag = false;
+        }
     }
 
 
@@ -164,23 +166,25 @@ public class MyFullSurfaceView extends SurfaceView implements SurfaceHolder.Call
 
     }
 
-    //设置刷新时间为50毫秒
-    private static final int REFRESH_TIME = 50;
+    class ThreadFunction implements Runnable {
+        //设置刷新时间为50毫秒
+        private static final int REFRESH_TIME = 50;
 
-    @Override
-    public void run() {
-        while (flag) {
-            long start = System.currentTimeMillis();
-            myDraw();
-            logic();
-            long end = System.currentTimeMillis();
-            try {
-                long use_time = end - start;
-                if (use_time < REFRESH_TIME) {
-                    mThread.sleep(REFRESH_TIME - use_time);
+        @Override
+        public void run() {
+            while (flag) {
+                long start = System.currentTimeMillis();
+                myDraw();
+                logic();
+                long end = System.currentTimeMillis();
+                try {
+                    long use_time = end - start;
+                    if (use_time < REFRESH_TIME) {
+                        Thread.sleep(REFRESH_TIME - use_time);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
         }
     }
