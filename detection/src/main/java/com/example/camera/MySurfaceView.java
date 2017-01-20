@@ -3,6 +3,7 @@ package com.example.camera;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ImageFormat;
 import android.graphics.Paint;
 import android.hardware.Camera;
 import android.util.AttributeSet;
@@ -12,11 +13,13 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by cpxiao on 15/9/19.
  */
 public class MySurfaceView extends SurfaceView {
+    private static final String TAG = "MySurfaceView";
 
     //SurfaceHolder用于控制SurfaceView的大小、格式等，用于监听SurfaceView的状态。
     private SurfaceHolder mSurfaceHolder;
@@ -98,9 +101,53 @@ public class MySurfaceView extends SurfaceView {
 
         @Override
         public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-            Camera.Parameters param = camera.getParameters();
-            param.setPreviewSize(i1, i2);
-            //camera.setParameters(param);
+            Camera.Parameters params = camera.getParameters();
+            Log.d(TAG, "getSupportedPreviewSizes()");
+            List<Camera.Size> sizes = params.getSupportedPreviewSizes();
+
+            if (sizes != null) {
+                    /* Select the size that fits surface considering maximum size allowed */
+                Size frameSize = calculateCameraFrameSize(sizes, new JavaCameraSizeAccessor(), width, height);
+
+                params.setPreviewFormat(ImageFormat.NV21);
+                Log.d(TAG, "Set preview size to " + Integer.valueOf((int)frameSize.width) + "x" + Integer.valueOf((int)frameSize.height));
+                params.setPreviewSize((int)frameSize.width, (int)frameSize.height);
+
+
+                List<String> FocusModes = params.getSupportedFocusModes();
+                if (FocusModes != null && FocusModes.contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO))
+                {
+                    params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
+                }
+
+                camera.setParameters(params);
+                params = camera.getParameters();
+
+                mFrameWidth = params.getPreviewSize().width;
+                mFrameHeight = params.getPreviewSize().height;
+
+//                if ((getLayoutParams().width == LayoutParams.MATCH_PARENT) && (getLayoutParams().height == LayoutParams.MATCH_PARENT))
+//                    mScale = Math.min(((float)height)/mFrameHeight, ((float)width)/mFrameWidth);
+//                else
+//                    mScale = 0;
+
+                int size = mFrameWidth * mFrameHeight;
+                size  = size * ImageFormat.getBitsPerPixel(params.getPreviewFormat()) / 8;
+                mBuffer = new byte[size];
+
+                mCamera.addCallbackBuffer(mBuffer);
+                mCamera.setPreviewCallbackWithBuffer(this);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                    mSurfaceTexture = new SurfaceTexture(MAGIC_TEXTURE_ID);
+                    mCamera.setPreviewTexture(mSurfaceTexture);
+                } else
+                    mCamera.setPreviewDisplay(null);
+
+                    /* Finally we are ready to start the preview */
+                Log.d(TAG, "startPreview");
+                mCamera.startPreview();
+            }
             try {
                 camera.setPreviewDisplay(mSurfaceHolder);
             } catch (IOException e) {
