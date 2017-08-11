@@ -12,4 +12,5 @@ public class FaceDetection {
         System.loadLibrary("face");
     }
     public native static void detectFace(String path, Bitmap bitmapIn, Bitmap bitmapOut);
+    public native static double measureDistance(int x1, int y1, int x2, int y2);
 }

@@ -13,7 +13,7 @@ android {
             cmake {
                 arguments '-DANDROID_STL=gnustl_shared', '-DANDROID_TOOLCHAIN=gcc'
                 arguments '-DANDROID_PLATFORM=android-9'
-                arguments '-DOpenCV_DIR=/home/jianjun/workspace/repos/opencv/opencv-android-arm/sdk/native/jni'
+                arguments '-DOpenCV_DIR=/home/jianjun/workspace/opencv.git/platforms/build_android_arm/install/sdk/native/jni'
                 //arguments "-DANDROID_TOOLCHAIN_NAME=arm-linux-androideabi-4.9"
                 abiFilters "armeabi-v7a"
                 cppFlags "-fexceptions"

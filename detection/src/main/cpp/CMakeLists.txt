@@ -32,3 +32,6 @@ set_target_properties(${LIB} PROPERTIES
   LINK_FLAGS "-Wl,-z,defs,--as-needed,--version-script=${PROJECT_SOURCE_DIR}/api.map"
 )
 
+set(CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR}/install)
+install(TARGETS ${LIB} DESTINATION lib)
+
